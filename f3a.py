@@ -9,7 +9,7 @@ from gtts import gTTS
 from googletrans import Translator
 from humanfriendly import format_timespan, format_size, format_number, format_length
 import asyncio
-from asyncio import subprocess, queues
+from gen-cpp import FinbotV1, FinbotV1_client
 import pytz
 import pafy
 import time
