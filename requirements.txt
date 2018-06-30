@@ -1,0 +1,13 @@
+python
+nano
+rsa
+requests
+bs4
+datetime
+tweepy
+pafy
+humanfriendly
+gTTS
+googletrans
+PyQRCode
+youtube-dl
