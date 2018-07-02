@@ -1,5 +1,4 @@
 from FinbotV1.finbotpy import *
-from FinbotV1.finbot.ttypes import *
 from multiprocessing import Pool, Process
 from datetime import datetime
 from datetime import timedelta, date
@@ -8,43 +7,86 @@ from bs4 import BeautifulSoup
 from gtts import gTTS
 from googletrans import Translator
 from humanfriendly import format_timespan, format_size, format_number, format_length
-import asyncio
-from gen-cpp import FinbotV1, FinbotV1_client
-import pytz
-import pafy
-import time
-import timeit
-import random
-import sys
-import ast
-import re
-import os
-import json
-import threading
-import subprocess
-import string
-import codecs
-import tweepy
-import requests
-import ctypes
-import urllib
-import urllib.parse
-import ffmpy
-import shutil
-import atexit
-import youtube_dl
+import asyncio, pytz, pafy, time, timeit, random, sys, ast, re, os, json, threading, subprocess, string, codecs, tweepy, ctypes, urllib, urllib.parse, ffmpy, shutil, atexit, youtube_dl
+from FinbotServer.protocol import TCompactProtocol
+from FinbotServer.transport import THttpClient
+from FinbotV1.finbot.ttypes import LoginRequest
+import json, requests, FinbotService
 
 botStart = time.time()
 mulai = time.time()
 tz = pytz.timezone("Asia/Jakarta")
 timeNow = datetime.now(tz=tz)
 
-kang = LINE("EuODGHKbBExU5t5cVX40.ts8Cl77Hy1JXlhsFqgZ78a.jIFVJiGfPYk/563sCCCu7+ZuSeOtuI/4SZEGk+YS0js=")
-kang1 = LINE("EuRoXlhvQeLLjdmaqST4.9nKMWLNYmAAGgsrfwUptja.Qs4EUWheMp8MGWXgs46PxRM0xcy0JjTGt7gFENItG7g=")
-kang2 = LINE("EuThWRGQTKYgkXl3kfO2.VSDCkvi3q6LPw/haKtYquG.h9vdhcFKxbsPIszx87P3f2e2zp99I8ZSSf02El3St1o=")
-fino1 = LINE("EuRfeH7j89jpZQVqXqk9.M9/L9hK1FEm8yTRBNtzGwq.2DE+fFZ0PEGfB6iEHpmCYMDtNOugTRGcExW46hCWlMA=")
-fino2 = LINE("Eue8XlRSQJvg15nrK1pf.mcBbjkYUSRUKzkwQP7SINW.VMmv3uYSjXYCiFRmGl2LEBrZVNRu0LLM5i8e21qgMnI=")
-fino3 = LINE("EuYbsGWRjAfZgHNuMz71.WKePpAbBFtz++EpIEefsWq.K33c129xfJLiQ/C2CcAN/XlBRInZpF28A8UzC8KxmSY=")
+loop = asyncio.get_event_loop()
+with open('finbotLogged.json', 'r') as fp:
+    run_bot = json.load(fp)
+    
+if run_bot['kang'] == "":
+    kang = LINE()
+else:
+	try:
+		kang = (run_bot['kang'])
+    except:
+    	run_bot['kang'] = ""
+    with open('finbotLogged.json', 'w') as fp:
+    	json.dump(run_bot, fp, sort_keys=True, indent=4)
+    kang = LINE()
+
+if run_bot['kang1'] == "":
+    kang1 = LINE()
+else:
+	try:
+		kang1 = (run_bot['kang1'])
+    except:
+    	run_bot['kang1'] = ""
+    with open('finbotLogged.json', 'w') as fp:
+    	json.dump(run_bot, fp, sort_keys=True, indent=4)
+    kang1 = LINE()
+
+if run_bot['kang2'] == "":
+    kang2 = LINE()
+else:
+	try:
+		kang2 = (run_bot['kang2'])
+    except:
+    	run_bot['kang2'] = ""
+    with open('finbotLogged.json', 'w') as fp:
+    	json.dump(run_bot, fp, sort_keys=True, indent=4)
+    kang2 = LINE()
+
+if run_bot['fino1'] == "":
+    fino1 = LINE()
+else:
+	try:
+		fino1 = (run_bot['fino1'])
+    except:
+    	run_bot['fino1'] = ""
+    with open('finbotLogged.json', 'w') as fp:
+    	json.dump(run_bot, fp, sort_keys=True, indent=4)
+    fino1 = LINE()
+
+if run_bot['fino2'] == "":
+    fino2 = LINE()
+else:
+	try:
+		fino2 = (run_bot['fino2'])
+    except:
+    	run_bot['fino2'] = ""
+    with open('finbotLogged.json', 'w') as fp:
+    	json.dump(run_bot, fp, sort_keys=True, indent=4)
+    fino2 = LINE()
+
+if run_bot['fino3'] == "":
+    fino3 = LINE()
+else:
+	try:
+		fino3 = (run_bot['fino3'])
+    except:
+    	run_bot['fino3'] = ""
+    with open('finbotLogged.json', 'w') as fp:
+    	json.dump(run_bot, fp, sort_keys=True, indent=4)
+    fino3 = LINE()
 
 oepoll = OEPoll(kang)
 kangSettings = kang.getSettings()
@@ -101,8 +143,68 @@ wait = {
     "finbot":True
 }
 
+Logged1 = 'WIN'
+Headers = {
+        'User-Agent': "Line/8.3.3",
+        'X-Line-Application': "DESKTOPWIN\t8.3.FinBOT\t18.99",
+        "x-lal": "ja-US_US",
+    }
+Logged2 = 'MAC'   
+Headers2 = {
+        'User-Agent': "Line/8.4.1 iPad4,1 9.0.2",
+        'X-Line-Application': "DESKTOPMAC 10.10.5-YOSEMITE-x64    MAC 10.8.5",
+        "x-lal": "ja-US_US",
+    }
+    
+Logged3 = 'CHROMEOS'
+Headers3 = {
+    'User-Agent': "Line/8.3.2",
+    'X-Line-Application': "CHROMEOS\t5.5.1\tFinBot-PCT\tV1.5\10.13.2",
+    "x-lal": "ja-US_US",
+    }
+    
+def headers2():
+    Headers = {
+    'User-Agent': "Line/8.3.2",
+    'X-Line-Application': "IOSIPAD\t6.9\tFinBot-PC\t6.9",
+    "x-lal": "ja-US_US",
+    }
+    return Headers
+    
+def headers3():
+    Headers = {
+    'User-Agent': "Line/8.3.2",
+    'X-Line-Application': "WIN10\t5.5.1\tFinBot-PCT\tV1.5\10.13.2",
+    "x-lal": "ja-US_US",
+    }
+    return Headers
+    
+def headers4():
+    Headers = {
+    'User-Agent': "Line/8.3.2",
+    'X-Line-Application': "DESKTOPMAC\t5.5.1\tFinBot-PCT\tV1.5\10.13.2",
+    "x-lal": "ja-US_US",
+    }
+    return Headers
+    
+def headers5():
+    Headers = {
+    'User-Agent': "Line/8.3.2",
+    'X-Line-Application': "DESKTOPWIN\t5.5.1\tFinBot-PCT\tV1.5\10.13.2",
+    "x-lal": "ja-US_US",
+    }
+    return Headers 
+     
+def headers6():
+    Headers = {
+    'User-Agent': "Line/8.3.2",
+    'X-Line-Application': "CLOVAFRIENDS\t5.5.1\tFinBot-PCT\tV1.5\10.13.2",
+    "x-lal": "ja-US_US",
+    }
+    return Headers
+
 if Bot_Run["restartBot"] != None:
-    kang1.sendMessage(Bot_Run["restartBot"], "🄵 🄸 🄽 🄱 🄾 🅃 Restart")
+    kang1.sendMessage(Bot_Run["restartBot"], "🄵🄸🄽 🄱🄾🅃\nRestart")
 try:
     Bot_Run["assist"] = {}
     Bot_Run["assist"][kangMID] = True
@@ -120,7 +222,6 @@ try:
         msg_dict = json.loads(f.read())
 except:
     print("Couldn't read Log data")
-
 
 def autoRestart():
     if time.time() - botStart > int(Bot_Run["timeRestart"]):
@@ -171,13 +272,13 @@ def atend1():
 atexit.register(atend)
 
 def restart_program():
-    print ("\nই۝🄵 🄸 🄽 🄱 🄾 🅃۝ईई═\nRestarted\nPlease Wait...\n")
+    print ("\nই۝🄵🄸🄽 🄱🄾🅃۝ईई═\nRestarted\nPlease Wait...\n")
     backupData()
     python = sys.executable
     os.execl(python, python, *sys.argv)
 
 def restartBot():
-    print ("\nই۝🄵 🄸 🄽 🄱 🄾 🅃۝ईई═\nRestarting\nPlease Wait...\n")
+    print ("\nই۝🄵🄸🄽 🄱🄾🅃۝ईई═\nRestarting\nPlease Wait...\n")
     backupData() #Restart and backup data
     python = sys.executable
     os.execl(python, python, *sys.argv)
@@ -1985,6 +2086,74 @@ def finbot(op):
                             	kang1.sendMessage(msg.to,"Give thanks for ۝🄵🄸🄽 🄱🄾🅃۝\nCheck ur authToken at inbox")
                             	kang1.sendMessage(msg._from, '{}'.format(qr))
 
+                        elif msg.text.lower().startswith("loginwin"):
+                          if msg.from_ in Master:
+                            separate = msg.text.split(" ")
+                            jmlh = int(separate[1])
+                            for x in range(jmlh):
+                                Headers.update({'x-lpqs' : '/api/v4/TalkService.do'})
+                                transport = THttpClient.THttpClient('https://gd2.line.naver.jp/api/v4/TalkService.do')
+                                transport.setCustomHeaders(Headers)
+                                protocol = TCompactProtocol.TCompactProtocol(transport)
+                                client = FinbotService.Client(protocol)
+                                qr = client.getAuthQrcode(keepLoggedIn=1, systemName=Logged1)
+                    link = "line://au/q/" + qr.verifier
+                    print(link)
+                    kang1.sendMessage(msg.to,"Starting white true")
+                    kang1.sendMessage(msg.to,"Except")
+                    kang1.sendMessage(msg.to,str(link))
+                    Headers.update({"x-lpqs" : '/api/v4/TalkService.do', 'X-Line-Access': qr.verifier})
+                    json.loads(requests.session().get('https://gd2.line.naver.jp/Q', headers=Headers).text)
+                    Headers.update({'x-lpqs' : '/api/v4p/rs'})
+                    transport = THttpClient.THttpClient('https://gd2.line.naver.jp/api/v4p/rs')
+                    transport.setCustomHeaders(Headers)
+                    protocol = TCompactProtocol.TCompactProtocol(transport)
+                    client = FinbotService.Client(protocol)
+                    req = LoginRequest()
+                    req.type = 1
+                    req.verifier = qr.verifier
+                    req.e2eeVersion = 1
+                    res = client.loginZ(req)
+                    print('\n')
+                    print(res.authToken)
+                else:
+                    kang1.sendMessage(msg.to, "Finbot has been made with header 1 as DesktopWin")
+                    kang1.sendMessage(msg.to,str(res.authToken))
+					
+            elif msg.text.lower().startswith("loginmac"):
+              if msg.from_ in Master:
+                separate = msg.text.split(" ")
+                jmlh = int(separate[1])
+                for x in range(jmlh):
+                    Headers2.update({'x-lpqs' : '/api/v4/TalkService.do'})
+                    transport = THttpClient.THttpClient('https://gd2.line.naver.jp/api/v4/TalkService.do')
+                    transport.setCustomHeaders(Headers2)
+                    protocol = TCompactProtocol.TCompactProtocol(transport)
+                    client = FinbotService.Client(protocol)
+                    qr = client.getAuthQrcode(keepLoggedIn=1, systemName=Logged2)
+                    link = "line://au/q/" + qr.verifier
+                    print(link)
+                    kang1.sendMessage(msg.to,"Starting... ")
+                    kang1.sendMessage(msg.to,"Except")
+                    kang1.sendMessage(msg.to,str(link))
+                    Headers2.update({"x-lpqs" : '/api/v4/TalkService.do', 'X-Line-Access': qr.verifier})
+                    json.loads(requests.session().get('https://gd2.line.naver.jp/Q', headers=Headers2).text)
+                    Headers2.update({'x-lpqs' : '/api/v4p/rs'})
+                    transport = THttpClient.THttpClient('https://gd2.line.naver.jp/api/v4p/rs')
+                    transport.setCustomHeaders(Headers2)
+                    protocol = TCompactProtocol.TCompactProtocol(transport)
+                    client = FinbotService.Client(protocol)
+                    req = LoginRequest()
+                    req.type = 1
+                    req.verifier = qr.verifier
+                    req.e2eeVersion = 1
+                    res = client.loginZ(req)
+                    print('\n')
+                    print(res.authToken)
+                else:
+                    kang1.sendMessage(msg.to, "Finbot has been made with header 2 as Desktopmac")
+                    kang1.sendMessage(msg.to,str(res.authToken))
+                
                         elif cmd == "cek. " or cmd == 'crash':
                           if wait["finbot"] == True:
                             if msg._from in Master:
