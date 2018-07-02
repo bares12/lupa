@@ -12,6 +12,8 @@ from FinbotServer.protocol import TCompactProtocol
 from FinbotServer.transport import THttpClient
 from FinbotV1.finbot.ttypes import LoginRequest
 import json, requests, FinbotService
+import gen_cpp
+from gen_cpp import FinbotV1_client
 
 botStart = time.time()
 mulai = time.time()
