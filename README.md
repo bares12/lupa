@@ -1,10 +1,15 @@
 # FinbotV1
 # PYTHON3
-### need python3 install
+### no need install anything just install python3 for run
 - vps/server
 ```
 sudo apt-get install python3-pip
 sudo apt-get install python3-tz
+```
+
+- Termux
+```
+apt install python
 ```
 
 - ই۝🄵🄸🄽 🄱🄾🅃۝ईई V1
