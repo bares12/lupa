@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
-from .channel import Channel
+from .finbotchannel import FinbotChannel
 
 import json, time, base64
 
@@ -12,10 +12,10 @@ def loggedIn(func):
             args[0].callback.other('You want to call the function, you must login to LINE')
     return checkLogin
     
-class Timeline(Channel):
+class Timeline(FinbotChannel):
 
     def __init__(self):
-        Channel.__init__(self, self.channel, self.server.CHANNEL_ID['LINE_TIMELINE'], False)
+        FinbotChannel.__init__(self, self.channel, self.server.CHANNEL_ID['LINE_TIMELINE'], False)
         self.tl = self.getChannelResult()
         self.__loginTimeline()
         

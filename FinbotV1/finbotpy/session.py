@@ -2,7 +2,6 @@
 from FinbotServer.transport import THttpClient
 from FinbotServer.protocol import TCompactProtocol
 from ..finbot import AuthService, TalkService, ChannelService, CallService, SquareService, ShopService
-
 class Session:
 
     def __init__(self, url, headers, path=''):
@@ -33,7 +32,7 @@ class Session:
 
         return self._talk
 
-    def Channel(self, isopen=True):
+    def FinbotChannel(self, isopen=True):
         self.transport = THttpClient.THttpClient(self.host)
         self.transport.setCustomHeaders(self.headers)
 
@@ -80,3 +79,15 @@ class Session:
             self.transport.open()
 
         return self._shop
+        
+    def Bot(self, isopen=True):
+        self.transport = THttpClient.THttpClient(self.host)
+        self.transport.setCustomHeaders(self.headers)
+
+        self.protocol = TCompactProtocol.TCompactProtocol(self.transport)
+        self._bot  = BotService.Client(self.protocol)
+        
+        if isopen:
+            self.transport.open()
+
+        return self._bot

@@ -51,7 +51,7 @@ class Models(Object):
         try:
             if returnAs not in ['file','path']:
                 raise Exception('Invalid returnAs value')
-            fName, fPath = 'linepy-%s-%i.bin' % (int(time.time()), randint(0, 9)), tempfile.gettempdir()
+            fName, fPath = 'finopy-%s-%i.bin' % (int(time.time()), randint(0, 9)), tempfile.gettempdir()
             if returnAs == 'file':
                 return fName
             elif returnAs == 'path':
