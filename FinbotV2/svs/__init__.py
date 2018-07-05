@@ -1,4 +1,4 @@
-from . import LineLoginService
-from . import TalkService
+from . import FinbotLoginService
+from . import FinbotService
 from . import ttypesDefault
 from . import ttypes
