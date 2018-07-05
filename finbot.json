@@ -14,8 +14,13 @@
     },
     "AutoRead": false,
     "BLinviter": false,
+    "Blacklist_User": {},
     "Img": {},
     "MentionKick": false,
+    "Pro_Cancel": {},
+    "Pro_Invite": {},
+    "Pro_Member": {},
+    "Pro_Qr": {},
     "Procancel": false,
     "ROM": {},
     "ResponAbsen": "『 Hadir boss 』",
@@ -55,7 +60,9 @@
     "Talkwblacklist": false,
     "Token": 112,
     "addbackupmem": false,
-    "assist": {},
+    "assist": {
+        "ud93cee7470e428e4c07567b4221f1b00": true
+    },
     "autoAdd": true,
     "autoBlock": true,
     "autoJoin": true,
@@ -116,7 +123,7 @@
     "readMember": {},
     "readPoint": {},
     "restartBot": null,
-    "restartPoint": "c82abfd2e82a31842c994996ef4a40e9e",
+    "restartPoint": "cb7af9deae423d9a5f27335edb94127f3",
     "scanPoint": {
         "c82abfd2e82a31842c994996ef4a40e9e": "8187746140183",
         "cb5ae091bf5b500a414cfbc96a08d2324": "8177532320999"
