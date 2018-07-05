@@ -6,8 +6,8 @@ import ssl
 from FinbotServer.protocol import TCompactProtocol
 from FinbotServer.transport import THttpClient
 import svs
-from FinbotV2.svs import TalkService
-from FinbotV2.svs import LineLoginService
+from FinbotV2.svs import FinbotService
+from FinbotV2.svs import FinbotLoginService
 from FinbotV2.svs.ttypes import LoginRequest
 ssl._create_default_https_context = ssl._create_unverified_context
 
@@ -58,7 +58,7 @@ class LineCallback(object):
 class qr():
     def get(self):
         #for getRSAKey and getAuthQrCode
-        client = createTransport(LINE_AUTH_QUERY_PATH_FIR, None, TalkService.Client)
+        client = createTransport(LINE_AUTH_QUERY_PATH_FIR, None, FinbotService.Client)
         qr = client.getAuthQrcode(keepLoggedIn=1, systemName="FINBOT")
         uri = "line://au/q/" + qr.verifier
         clb = LineCallback(defaultCallback)
@@ -72,13 +72,13 @@ class qr():
         }
         getAccessKey = getJson(host + LINE_CERTIFICATE_PATH, header)
         # client instance for login
-        client = createTransport(LINE_AUTH_QUERY_PATH, None, LineLoginService.Client)
+        client = createTransport(LINE_AUTH_QUERY_PATH, None, FinbotLoginService.Client)
         req = LoginRequest()
         req.type = 1
         req.verifier = qr.verifier
         req.e2eeVersion = 1
         res = client.loginZ(req)
-        client = createTransport(LINE_API_QUERY_PATH_FIR, {'X-Line-Access':res.authToken}, TalkService.Client)
+        client = createTransport(LINE_API_QUERY_PATH_FIR, {'X-Line-Access':res.authToken}, FinbotService.Client)
         return res.authToken
 
 if __name__ == '__main__':
