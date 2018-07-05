@@ -1,9 +1,7 @@
 from FinbotServer.Thrift import TType, TMessageType, TFrozenDict, TException, TApplicationException
 from FinbotServer.protocol.TProtocol import TProtocolException
 import sys
-
 from FinbotServer.transport import TTransport
-
 
 class LoginResultType(object):
     SUCCESS = 1

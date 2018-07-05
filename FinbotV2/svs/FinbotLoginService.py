@@ -99,8 +99,6 @@ class Processor(Iface, TProcessor):
         oprot.trans.flush()
 
 # HELPER FUNCTIONS AND STRUCTURES
-
-
 class loginZ_args(object):
     """
     Attributes:
